@@ -1,0 +1,44 @@
+{
+	"name": "cordova-iconsplash-creator",
+	"version": "1.0.0",
+	"description": "Automatic icon and splash creator for Cordova and Ionic projects",
+	"keywords": [
+		"cordova",
+		"ionic",
+		"icon",
+		"splash",
+		"media",
+		"resources",
+		"assets",
+		"generator",
+		"creator"
+	],
+	"homepage": "https://github.com/amirhmoradi/cordova-iconsplash-creator#readme",
+	"bugs": {
+		"url": "https://github.com/amirhmoradi/cordova-iconsplash-creator/issues"
+	},
+	"license": "MIT",
+	"author": "Amir Moradi <contact@amirhmoradi.com>",
+	"main": "index.js",
+	"directories": {
+		"bin": "./bin"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/amirhmoradi/cordova-iconsplash-creator.git"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"dependencies": {
+		"colors": "1.3.0",
+		"fs-extra": "6.0.1",
+		"gm": "1.23.1",
+		"minimist": "1.2.0",
+		"path": "0.12.7",
+		"q": "1.5.1",
+		"underscore": "1.9.0",
+		"xml2js": "0.4.19"
+	},
+	"preferGlobal": true
+}
