@@ -139,7 +139,21 @@ var getPlatforms = function (projectName) {
       { name: 'drawable-port-hdpi-screen.png',  width: 480,  height: 800  },
       { name: 'drawable-port-xhdpi-screen.png', width: 720,  height: 1280 },
       { name: 'drawable-port-xxhdpi-screen.png', width: 960, height: 1600  },
-      { name: 'drawable-port-xxxhdpi-screen.png', width: 1280, height: 1920  }
+      { name: 'drawable-port-xxxhdpi-screen.png', width: 1280, height: 1920  },
+      // Landscape
+      { name: 'splash-land-ldpi.png', width:320, height: 200},
+      { name: 'splash-land-mdpi.png', width:480, height: 320},
+      { name: 'splash-land-hdpi.png', width:800, height: 480},
+      { name: 'splash-land-xhdpi.png', width:1280, height: 720},
+      { name: 'splash-land-xxhdpi.png', width:1600, height: 960},
+      { name: 'splash-land-xxxhdpi.png', width:1920, height: 1280},
+      // Portrait
+      { name: 'splash-port-ldpi.png', width: 200, height: 320},
+      { name: 'splash-port-mdpi.png', width:320, height: 480},
+      { name: 'splash-port-hdpi.png', width:480, height: 800},
+      { name: 'splash-port-xhdpi.png', width:720, height: 1280},
+      { name: 'splash-port-xxhdpi.png', width:960, height: 1600},
+      { name: 'splash-port-xxxhdpi.png', width:1280, height: 1920}
     ]
   });
   platforms.push({
