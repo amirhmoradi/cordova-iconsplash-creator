@@ -471,10 +471,6 @@ var generateSplash = function (platform, splash) {
   }
   var x = (Math.max(splash.width, splash.height) - splash.width)/2;
   var y = (Math.max(splash.width, splash.height) - splash.height)/2;
-  display.success(' src : ' + srcPath + ' exists');
-  display.success(' dst : ' + dstPath + ' can be created');
-  display.success(' x : ' + x);
-  display.success(' y : ' + y);
   gm(srcPath)
     .resize(Math.max(splash.width, splash.height))
     .crop(splash.width, splash.height,x,y)
