@@ -21,6 +21,7 @@ settings.GEN_PUSH_ICON = argv.dopushicon || true;
 settings.GEN_ICON = argv.doicon || true;
 settings.GEN_SPLASH = argv.dosplash || true;
 settings.CONFIG_FILE = argv.config || 'config.xml';
+settings.PUSH_ICON_FILE = argv.icon || 'ic_notification_icon.png';
 settings.ICON_FILE = argv.icon || 'icon.png';
 settings.SPLASH_FILE   = argv.splash || 'splash.png';
 settings.OLD_XCODE_PATH = argv['xcode-old'] || false;
