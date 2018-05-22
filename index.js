@@ -53,8 +53,8 @@ var getPlatforms = function (projectName) {
     name : 'ios',
     // TODO: use async fs.exists
     isAdded : fs.existsSync('platforms/ios'),
-    //iconsPath : 'platforms/ios/' + projectName + xcodeFolder,
-    iconsPath : 'res/icon/ios/',
+    iconsPath : 'platforms/ios/' + projectName + xcodeFolder,
+    //iconsPath : 'res/icon/ios/',
     icons : [
       { name: ''+iconName+'-20.png',             size : 20   },
       { name: ''+iconName+'-20@2x.png',          size : 40   },
@@ -290,7 +290,6 @@ var getPlatforms = function (projectName) {
     ]
   });
   // TODO: add missing platforms
-  display.success('platforms : ' + JSON.stringify(platforms));
   deferred.resolve(platforms);
   return deferred.promise;
 };
