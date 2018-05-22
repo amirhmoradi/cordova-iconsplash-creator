@@ -17,6 +17,7 @@ var isEmpty = (object) => {
  * @var {Object} settings - names of the config file and of the icon image
  */
 var settings = {};
+settings.GEN_PUSH_ICON = argv.dopushicon || true;
 settings.GEN_ICON = argv.doicon || true;
 settings.GEN_SPLASH = argv.dosplash || true;
 settings.CONFIG_FILE = argv.config || 'config.xml';
@@ -44,6 +45,7 @@ var getPlatforms = function (projectName) {
   }
 
   var iconName = settings.ICON_NAME || 'icon';
+  var pushIconName = settings.PUSH_ICON_NAME || 'ic_notification_icon';
   var appIconName = settings.ICON_NAME || 'AppIcon';
 
   platforms.push({
@@ -82,6 +84,29 @@ var getPlatforms = function (projectName) {
       { name: ''+appIconName+'86x86@2x.png',     size : 172  },
       { name: ''+appIconName+'98x98@2x.png',     size : 196  }
     ],
+    pushIconsPath : 'res/icon/ios/',
+    pushIcons : [
+      { name: ''+pushIconName+'-20.png',             size : 20   },
+      { name: ''+pushIconName+'-20@2x.png',          size : 40   },
+      { name: ''+pushIconName+'-20@3x.png',          size : 60   },
+      { name: ''+pushIconName+'-40.png',             size : 40   },
+      { name: ''+pushIconName+'-40@2x.png',          size : 80   },
+      { name: ''+pushIconName+'-50.png',             size : 50   },
+      { name: ''+pushIconName+'-50@2x.png',          size : 100  },
+      { name: ''+pushIconName+'-60@2x.png',          size : 120  },
+      { name: ''+pushIconName+'-60@3x.png',          size : 180  },
+      { name: ''+pushIconName+'-72.png',             size : 72   },
+      { name: ''+pushIconName+'-72@2x.png',          size : 144  },
+      { name: ''+pushIconName+'-76.png',             size : 76   },
+      { name: ''+pushIconName+'-76@2x.png',          size : 152  },
+      { name: ''+pushIconName+'-83.5@2x.png',        size : 167  },
+      { name: ''+pushIconName+'-1024.png',           size : 1024 },
+      { name: ''+pushIconName+'-small.png',          size : 29   },
+      { name: ''+pushIconName+'-small@2x.png',       size : 58   },
+      { name: ''+pushIconName+'-small@3x.png',       size : 87   },
+      { name: ''+pushIconName+'.png',                size : 57   },
+      { name: ''+pushIconName+'@2x.png',             size : 114  },
+    ],
     splashPath : 'res/screen/ios/',
     splashes : [
       // iPhone
@@ -108,7 +133,8 @@ var getPlatforms = function (projectName) {
     name : 'android',
     isAdded : fs.existsSync('platforms/android'),
     //iconsPath : 'platforms/android/res/',
-    iconsPath : 'res/icon/android/',
+    //iconsPath : 'res/icon/android/',
+    iconsPath : 'platforms/android/app/src/main/res/',
     icons : [
       { name : 'drawable/'+iconName+'.png',       size : 96 * androidMult },
       { name : 'drawable-hdpi/'+iconName+'.png',  size : 72 * androidMult },
@@ -123,6 +149,22 @@ var getPlatforms = function (projectName) {
       { name : 'mipmap-xhdpi/'+iconName+'.png', size : 96 * androidMult },
       { name : 'mipmap-xxhdpi/'+iconName+'.png', size : 144 * androidMult },
       { name : 'mipmap-xxxhdpi/'+iconName+'.png', size : 192 * androidMult }
+    ],
+    pushIconsPath : 'platforms/android/app/src/main/res/',
+    pushIcons : [
+      { name : 'drawable/'+pushIconName+'.png',       size : 96 * androidMult },
+      { name : 'drawable-hdpi/'+pushIconName+'.png',  size : 72 * androidMult },
+      { name : 'drawable-ldpi/'+pushIconName+'.png',  size : 36 * androidMult },
+      { name : 'drawable-mdpi/'+pushIconName+'.png',  size : 48 * androidMult },
+      { name : 'drawable-xhdpi/'+pushIconName+'.png', size : 96 * androidMult },
+      { name : 'drawable-xxhdpi/'+pushIconName+'.png', size : 144 * androidMult },
+      { name : 'drawable-xxxhdpi/'+pushIconName+'.png', size : 192 * androidMult },
+      { name : 'mipmap-hdpi/'+pushIconName+'.png',  size : 72 * androidMult },
+      { name : 'mipmap-ldpi/'+pushIconName+'.png',  size : 36 * androidMult },
+      { name : 'mipmap-mdpi/'+pushIconName+'.png',  size : 48 * androidMult },
+      { name : 'mipmap-xhdpi/'+pushIconName+'.png', size : 96 * androidMult },
+      { name : 'mipmap-xxhdpi/'+pushIconName+'.png', size : 144 * androidMult },
+      { name : 'mipmap-xxxhdpi/'+pushIconName+'.png', size : 192 * androidMult }
     ],
     splashPath : 'res/screen/android/',
     splashes : [
@@ -427,6 +469,50 @@ if (icon.height) {
 };
 
 /**
+ * Resizes, crops (if needed) and creates a new icon in the platform's folder.
+ *
+ * @param  {Object} platform
+ * @param  {Object} icon
+ * @return {Promise}
+ */
+var generatePushIcon = function (platform, icon) {
+  var deferred = Q.defer();
+  var srcPath = settings.PUSH_ICON_FILE;
+  var platformPath = srcPath.replace(/\.png$/, '-' + platform.name + '.png');
+  if (fs.existsSync(platformPath)) {
+    srcPath = platformPath;
+  }
+  var dstPath = platform.pushIconsPath + icon.name;
+  var dst = path.dirname(dstPath);
+  if (!fs.existsSync(dst)) {
+    fs.mkdirsSync(dst);
+  }
+  gm(srcPath)
+  .resize(icon.size,icon.size)
+  .write(dstPath, function(err){
+    if (err) {
+      deferred.reject(err);
+    } else {
+      deferred.resolve();
+      display.success(icon.name + ' created');
+    }
+});
+if (icon.height) {
+  gm(srcPath)
+    .crop(icon.size,icon.height)
+    .write(dstPath, function(err){
+      if (err) {
+        deferred.reject(err);
+      } else {
+        deferred.resolve();
+        display.success(icon.name + ' cropped');
+      }
+  });
+}
+  return deferred.promise;
+};
+
+/**
  * Generates icons based on the platform object
  *
  * @param  {Object} platform
@@ -438,6 +524,22 @@ var generateIconsForPlatform = function (platform) {
   var icons = platform.icons;
   icons.forEach(function (icon) {
     all.push(generateIcon(platform, icon));
+  });
+  return Promise.all(all);
+};
+
+/**
+ * Generates icons based on the platform object
+ *
+ * @param  {Object} platform
+ * @return {Promise}
+ */
+var generatePushIconsForPlatform = function (platform) {
+  display.header('Generating Push Icons for ' + platform.name);
+  var all = [];
+  var icons = platform.pushIcons;
+  icons.forEach(function (icon) {
+    all.push(generatePushIcon(platform, icon));
   });
   return Promise.all(all);
 };
@@ -555,6 +657,10 @@ var generateResources = function (platforms) {
     }).then(function () {
       if(settings.GEN_SPLASH) {
         return generateSplashForPlatform(platform);
+      }
+    }).then(function () {
+      if(settings.GEN_PUSH_ICON) {
+        return generatePushIconsForPlatform(platform);
       }
     });
     all.push(sequence);
