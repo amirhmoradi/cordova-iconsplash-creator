@@ -24,9 +24,14 @@ settings.CONFIG_FILE = argv.config || 'config.xml';
 settings.PUSH_ICON_FILE = argv.pushicon || 'ic_notification_icon.png';
 settings.ICON_FILE = argv.icon || 'icon.png';
 settings.SPLASH_FILE   = argv.splash || 'splash.png';
-settings.OLD_XCODE_PATH = argv['xcode-old'] || false;
+settings.OLD_XCODE_PATH = argv.xcodeold || false;
+settings.OLD_ANDROID_PATH = argv.androidold || false;
 settings.ICON_NAME = argv.name || null;
 settings.TARGET_DP = argv.dp || 48;
+settings.USE_PLATFORMS_PATH = argv.useplatformspath || true;
+settings.RESOURCE_PATH = argv.resourcepath || 'res'; // without trailing slash
+settings.ICON_DIR = argv.icondir || 'icon'; // without trailing slash
+settings.SPLASH_DIR = argv.splashdir || 'screen'; // without trailing slash
 
 var androidMult = settings.TARGET_DP / 48;
 
@@ -53,8 +58,9 @@ var getPlatforms = function (projectName) {
     name : 'ios',
     // TODO: use async fs.exists
     isAdded : fs.existsSync('platforms/ios'),
-    iconsPath : 'platforms/ios/' + projectName + xcodeFolder,
+    platformIconsPath : 'platforms/ios/' + projectName + xcodeFolder,
     //iconsPath : 'res/icon/ios/',
+    iconsPath : (settings.RESOURCE_PATH + '/' + settings.ICON_DIR + '/ios/').replace('//', '/'),
     icons : [
       { name: ''+iconName+'-20.png',             size : 20   },
       { name: ''+iconName+'-20@2x.png',          size : 40   },
@@ -85,7 +91,8 @@ var getPlatforms = function (projectName) {
       { name: ''+appIconName+'86x86@2x.png',     size : 172  },
       { name: ''+appIconName+'98x98@2x.png',     size : 196  }
     ],
-    pushIconsPath : 'res/icon/ios/',
+    platformPushIconsPath : 'platforms/ios/' + projectName + xcodeFolder,
+    pushIconsPath : (settings.RESOURCE_PATH + '/' + settings.ICON_DIR + '/ios/').replace('//', '/'),
     pushIcons : [
       { name: ''+pushIconName+'-20.png',             size : 20   },
       { name: ''+pushIconName+'-20@2x.png',          size : 40   },
@@ -108,7 +115,9 @@ var getPlatforms = function (projectName) {
       { name: ''+pushIconName+'.png',                size : 57   },
       { name: ''+pushIconName+'@2x.png',             size : 114  },
     ],
-    splashPath : 'res/screen/ios/',
+    //splashPath : 'res/screen/ios/',
+    splashPath : (settings.RESOURCE_PATH + '/' + settings.SPLASH_DIR + '/ios/').replace('//', '/'),
+    platformSplashPath : 'platforms/ios/' + projectName + xcodeFolder,
     splashes : [
       // iPhone
       { name: 'Default~iphone.png',            width: 320,  height: 480  },
@@ -135,7 +144,8 @@ var getPlatforms = function (projectName) {
     isAdded : fs.existsSync('platforms/android'),
     //iconsPath : 'platforms/android/res/',
     //iconsPath : 'res/icon/android/',
-    iconsPath : 'platforms/android/app/src/main/res/',
+    platformIconsPath: settings.OLD_ANDROID_PATH  ?  'platforms/android/res/' : 'platforms/android/app/src/main/res/',
+    iconsPath : (settings.RESOURCE_PATH + '/' + settings.ICON_DIR + '/android/').replace('//', '/'),
     icons : [
       { name : 'drawable/'+iconName+'.png',       size : 96 * androidMult },
       { name : 'drawable-hdpi/'+iconName+'.png',  size : 72 * androidMult },
@@ -151,7 +161,8 @@ var getPlatforms = function (projectName) {
       { name : 'mipmap-xxhdpi/'+iconName+'.png', size : 144 * androidMult },
       { name : 'mipmap-xxxhdpi/'+iconName+'.png', size : 192 * androidMult }
     ],
-    pushIconsPath : 'platforms/android/app/src/main/res/',
+    platformPushIconsPath: settings.OLD_ANDROID_PATH  ?  'platforms/android/res/' : 'platforms/android/app/src/main/res/',
+    pushIconsPath : (settings.RESOURCE_PATH + '/' + settings.ICON_DIR + '/android/').replace('//', '/'),
     pushIcons : [
       { name : 'drawable/'+pushIconName+'.png',       size : 96 * androidMult },
       { name : 'drawable-hdpi/'+pushIconName+'.png',  size : 72 * androidMult },
@@ -167,7 +178,9 @@ var getPlatforms = function (projectName) {
       { name : 'mipmap-xxhdpi/'+pushIconName+'.png', size : 144 * androidMult },
       { name : 'mipmap-xxxhdpi/'+pushIconName+'.png', size : 192 * androidMult }
     ],
-    splashPath : 'res/screen/android/',
+    //splashPath : 'res/screen/android/',
+    platformSplashPath : settings.OLD_ANDROID_PATH  ?  'platforms/android/res/' : 'platforms/android/app/src/main/res/',
+    splashPath : (settings.RESOURCE_PATH + '/' + settings.SPLASH_DIR + '/android/').replace('//', '/'),
     splashes : [
       // Landscape
       { name: 'drawable-land-ldpi-screen.png',  width: 320,  height: 200  },
@@ -203,8 +216,8 @@ var getPlatforms = function (projectName) {
     name : 'osx',
     // TODO: use async fs.exists
     isAdded : fs.existsSync('platforms/osx'),
-    //iconsPath : 'platforms/osx/' + projectName + xcodeFolder,
-    iconsPath : 'res/icon/osx/',
+    platformIconsPath : 'platforms/osx/' + projectName + xcodeFolder,
+    iconsPath : (settings.RESOURCE_PATH + '/' + settings.ICON_DIR + '/osx/').replace('//', '/'),
     icons : [
       { name : ''+iconName+'-16x16.png',    size : 16  },
       { name : ''+iconName+'-32x32.png',    size : 32  },
@@ -213,7 +226,8 @@ var getPlatforms = function (projectName) {
       { name : ''+iconName+'-256x256.png',  size : 256 },
       { name : ''+iconName+'-512x512.png',  size : 512 }
     ],
-    splashPath : 'res/screen/osx/',
+    platformSplashPath: 'platforms/osx/' + projectName + xcodeFolder,
+    splashPath : (settings.RESOURCE_PATH + '/' + settings.SPLASH_DIR + '/osx/').replace('//', '/'),
     // TODO : Correct filenames for osx
     splashes : [
       { name: 'SplashScreen.scale-100.png', width: 620,  height: 300  },
@@ -226,8 +240,8 @@ var getPlatforms = function (projectName) {
   platforms.push({
     name : 'windows',
     isAdded : fs.existsSync('platforms/windows'),
-    //iconsPath : 'platforms/windows/images/',
-    iconsPath : 'res/icon/windows/',
+    iconsPath : (settings.RESOURCE_PATH + '/' + settings.ICON_DIR + '/windows/').replace('//', '/'),
+    platformIconsPath: 'platforms/windows/images/',
     icons : [
       { name : 'StoreLogo.scale-100.png', size : 50  },
       { name : 'StoreLogo.scale-125.png', size : 63  },
@@ -238,6 +252,16 @@ var getPlatforms = function (projectName) {
       { name : 'StoreLogo.scale-240.png', size : 120 },
       { name : 'StoreLogo.scale-400.png', size : 200 },
 
+      { name : 'Square30x30Logo.scale-80.png', size : 24 },
+      { name : 'Square30x30Logo.scale-100.png', size : 30 },
+      { name : 'Square30x30Logo.scale-140.png', size : 42 },
+      { name : 'Square30x30Logo.scale-180.png', size : 54 },
+
+      { name : 'Square30x30Logo.targetsize-16.png', size : 16 },
+      { name : 'Square30x30Logo.targetsize-32.png', size : 32 },
+      { name : 'Square30x30Logo.targetsize-48.png', size : 48 },
+      { name : 'Square30x30Logo.targetsize-256.png', size : 256 },
+
       { name : 'Square44x44Logo.scale-100.png', size : 44  },
       { name : 'Square44x44Logo.scale-125.png', size : 55  },
       { name : 'Square44x44Logo.scale-140.png', size : 62  },
@@ -245,6 +269,11 @@ var getPlatforms = function (projectName) {
       { name : 'Square44x44Logo.scale-200.png', size : 88  },
       { name : 'Square44x44Logo.scale-240.png', size : 106  },
       { name : 'Square44x44Logo.scale-400.png', size : 176 },
+
+      { name : 'Square70x70Logo.scale-80.png', size : 56  },
+      { name : 'Square70x70Logo.scale-100.png', size : 70  },
+      { name : 'Square70x70Logo.scale-140.png', size : 98  },
+      { name : 'Square70x70Logo.scale-180.png', size : 126 },
 
       { name : 'Square71x71Logo.scale-100.png', size : 71  },
       { name : 'Square71x71Logo.scale-125.png', size : 89  },
@@ -254,14 +283,17 @@ var getPlatforms = function (projectName) {
       { name : 'Square71x71Logo.scale-240.png', size : 170 },
       { name : 'Square71x71Logo.scale-400.png', size : 284 },
 
+      { name : 'Square150x150Logo.scale-80.png', size : 120 },
       { name : 'Square150x150Logo.scale-100.png', size : 150 },
       { name : 'Square150x150Logo.scale-125.png', size : 188 },
       { name : 'Square150x150Logo.scale-140.png', size : 210 },
       { name : 'Square150x150Logo.scale-150.png', size : 225 },
+      { name : 'Square150x150Logo.scale-180.png', size : 270 },
       { name : 'Square150x150Logo.scale-200.png', size : 300 },
       { name : 'Square150x150Logo.scale-240.png', size : 360 },
       { name : 'Square150x150Logo.scale-400.png', size : 600 },
 
+      { name : 'Square310x310Logo.scale-80.png', size : 248 },
       { name : 'Square310x310Logo.scale-100.png', size : 310  },
       { name : 'Square310x310Logo.scale-125.png', size : 388  },
       { name : 'Square310x310Logo.scale-140.png', size : 434  },
@@ -280,7 +312,8 @@ var getPlatforms = function (projectName) {
       { name : 'Wide310x150Logo.scale-240.png', size : 744, height : 360  },
       { name : 'Wide310x150Logo.scale-400.png', size : 1240, height : 600 }
     ],
-    splashPath : 'res/screen/windows/',
+    splashPath : (settings.RESOURCE_PATH + '/' + settings.SPLASH_DIR + '/windows/').replace('//', '/'),
+    platformSplashPath: 'platforms/windows/images/',
     splashes : [
       { name: 'SplashScreen.scale-100.png', width: 620,  height: 300  },
       { name: 'SplashScreen.scale-125.png', width: 775,  height: 375  },
@@ -329,6 +362,9 @@ var getProjectName = function () {
         deferred.reject(err);
       }
       var projectName = result.widget.name[0];
+      if (typeof projectName == "object") {
+        projectName = projectName._.trim()
+      }
       display.success('project ' + projectName + ' exists');
       deferred.resolve(projectName);
     });
@@ -406,7 +442,8 @@ var generateIcon = function (platform, icon) {
   if (fs.existsSync(platformPath)) {
     srcPath = platformPath;
   }
-  var dstPath = platform.iconsPath + icon.name;
+  var dstPath = (settings.USE_PLATFORMS_PATH ?
+    platform.platformIconsPath : platform.iconsPath) + icon.name;
   var dst = path.dirname(dstPath);
   if (!fs.existsSync(dst)) {
     fs.mkdirsSync(dst);
@@ -416,55 +453,24 @@ var generateIcon = function (platform, icon) {
   .write(dstPath, function(err){
     if (err) {
       deferred.reject(err);
+      display.error('Failed to create ' + icon.name + '[' + dstPath + ']');
     } else {
       deferred.resolve();
-      display.success(icon.name + ' created');
-    }
-});
-if (icon.height) {
-  gm(srcPath)
-    .crop(icon.size,icon.height)
-    .write(dstPath, function(err){
-      if (err) {
-        deferred.reject(err);
-      } else {
-        deferred.resolve();
-        display.success(icon.name + ' cropped');
-      }
-  });
-}
-  /*ig.resize({
-    srcPath: srcPath,
-    dstPath: dstPath,
-    quality: 1,
-    format: 'png',
-    width: icon.size,
-    height: icon.size
-  } , function(err, stdout, stderr){
-    if (err) {
-      deferred.reject(err);
-    } else {
-      deferred.resolve();
-      display.success(icon.name + ' created');
+      display.success(icon.name + ' created [' + dstPath + ']');
     }
   });
   if (icon.height) {
-    ig.crop({
-      srcPath: srcPath,
-      dstPath: dstPath,
-      quality: 1,
-      format: 'png',
-      width: icon.size,
-      height: icon.height
-    } , function(err, stdout, stderr){
-      if (err) {
-        deferred.reject(err);
-      } else {
-        deferred.resolve();
-        display.success(icon.name + ' cropped');
-      }
+    gm(srcPath)
+      .crop(icon.size,icon.height)
+      .write(dstPath, function(err){
+        if (err) {
+          deferred.reject(err);
+        } else {
+          deferred.resolve();
+          display.success(icon.name + ' cropped');
+        }
     });
-  }*/
+  }
   return deferred.promise;
 };
 
@@ -482,7 +488,8 @@ var generatePushIcon = function (platform, icon) {
   if (fs.existsSync(platformPath)) {
     srcPath = platformPath;
   }
-  var dstPath = platform.pushIconsPath + icon.name;
+  var dstPath = (settings.USE_PLATFORMS_PATH ?
+    platform.platformPushIconsPath : platform.pushIconsPath) + icon.name;
   var dst = path.dirname(dstPath);
   if (!fs.existsSync(dst)) {
     fs.mkdirsSync(dst);
@@ -492,23 +499,24 @@ var generatePushIcon = function (platform, icon) {
   .write(dstPath, function(err){
     if (err) {
       deferred.reject(err);
+      display.error('Failed to create ' + icon.name + '[' + dstPath + ']');
     } else {
       deferred.resolve();
-      display.success(icon.name + ' created');
+      display.success(icon.name + ' created [' + dstPath + ']');
     }
-});
-if (icon.height) {
-  gm(srcPath)
-    .crop(icon.size,icon.height)
-    .write(dstPath, function(err){
-      if (err) {
-        deferred.reject(err);
-      } else {
-        deferred.resolve();
-        display.success(icon.name + ' cropped');
-      }
   });
-}
+  if (icon.height) {
+    gm(srcPath)
+      .crop(icon.size,icon.height)
+      .write(dstPath, function(err){
+        if (err) {
+          deferred.reject(err);
+        } else {
+          deferred.resolve();
+          display.success(icon.name + ' cropped');
+        }
+    });
+  }
   return deferred.promise;
 };
 
@@ -580,7 +588,8 @@ var generateSplash = function (platform, splash) {
   if (fs.existsSync(platformPath)) {
     srcPath = platformPath;
   }
-  var dstPath = platform.splashPath + splash.name;
+  var dstPath = (settings.USE_PLATFORMS_PATH ?
+    platform.platformSplashPath : platform.splashPath) + splash.name;
   var dst = path.dirname(dstPath);
   if (!fs.existsSync(dst)) {
     fs.mkdirsSync(dst);
@@ -593,9 +602,10 @@ var generateSplash = function (platform, splash) {
     .write(dstPath, function(err){
       if (err) {
         deferred.reject(err);
+        display.error('Failed to create ' + splash.name + '[' + dstPath + ']');
       } else {
         deferred.resolve();
-        display.success(splash.name + ' created');
+        display.success(splash.name + ' created [' + dstPath + ']');
       }
   });
   return deferred.promise;
@@ -667,6 +677,10 @@ var generateResources = function (platforms) {
   });
   Q.all(all).then(function () {
     deferred.resolve();
+  }).catch(function (err) {
+    if (err) {
+      deferred.reject(err);
+    }
   });
   return deferred.promise;
 };
