@@ -518,17 +518,34 @@ var generatePushIcon = function (platform, icon) {
   if (!fs.existsSync(dst)) {
     fs.mkdirsSync(dst);
   }
-  gm(srcPath)
-  .resize(icon.size,icon.size)
-  .write(dstPath, function(err){
-    if (err) {
-      deferred.reject(err);
-      display.error('Failed to create ' + icon.name + '[' + dstPath + ']');
-    } else {
-      deferred.resolve();
-      display.success(icon.name + ' created [' + dstPath + ']');
-    }
-  });
+  if(platform.name == 'android'){
+    gm(srcPath)
+    .resize(icon.size,icon.size)
+    .monochrome()
+    .flatten()
+    .write(dstPath, function(err){
+      if (err) {
+        deferred.reject(err);
+        display.error('Failed to create ' + icon.name + '[' + dstPath + ']');
+      } else {
+        deferred.resolve();
+        display.success(icon.name + ' created [' + dstPath + ']');
+      }
+    });
+  }
+  else {
+    gm(srcPath)
+    .resize(icon.size,icon.size)
+    .write(dstPath, function(err){
+      if (err) {
+        deferred.reject(err);
+        display.error('Failed to create ' + icon.name + '[' + dstPath + ']');
+      } else {
+        deferred.resolve();
+        display.success(icon.name + ' created [' + dstPath + ']');
+      }
+    });
+  }
   if (icon.height) {
     gm(srcPath)
       .crop(icon.size,icon.height)
