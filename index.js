@@ -522,7 +522,6 @@ var generatePushIcon = function (platform, icon) {
     gm(srcPath)
     .resize(icon.size,icon.size)
     .monochrome()
-    .flatten()
     .write(dstPath, function(err){
       if (err) {
         deferred.reject(err);
