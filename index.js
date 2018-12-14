@@ -520,8 +520,9 @@ var generatePushIcon = function (platform, icon) {
   }
   if(platform.name == 'android'){
     gm(srcPath)
-    .resize(icon.size,icon.size)
     .monochrome()
+    .colos(1)
+    .resize(icon.size,icon.size)
     .write(dstPath, function(err){
       if (err) {
         deferred.reject(err);
