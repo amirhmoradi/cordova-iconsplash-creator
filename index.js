@@ -22,6 +22,7 @@ settings.GEN_ICON = argv.doicon || true;
 settings.GEN_SPLASH = argv.dosplash || true;
 settings.CONFIG_FILE = argv.config || 'config.xml';
 settings.PUSH_ICON_FILE = argv.pushicon || 'ic_notification_icon.png';
+settings.PUSH_ICON_NAME = argv.pushiconname || 'ic_notification_icon';
 settings.ICON_FILE = argv.icon || 'icon.png';
 settings.SPLASH_FILE   = argv.splash || 'splash.png';
 settings.OLD_XCODE_PATH = argv.xcodeold || false;
@@ -48,6 +49,11 @@ var getPlatforms = function (projectName) {
 
   if (settings.OLD_XCODE_PATH) {
     xcodeFolder = '/Resources/icons/';
+  }
+  var xcodeSplashFolder = '/Images.xcassets/LaunchImage.launchimage/';
+
+  if (settings.OLD_XCODE_PATH) {
+    xcodeSplashFolder = '/Resources/screens/';
   }
 
   var iconName = settings.ICON_NAME || 'icon';
@@ -117,7 +123,7 @@ var getPlatforms = function (projectName) {
     ],
     //splashPath : 'res/screen/ios/',
     splashPath : (settings.RESOURCE_PATH + '/' + settings.SPLASH_DIR + '/ios/').replace('//', '/'),
-    platformSplashPath : 'platforms/ios/' + projectName + xcodeFolder,
+    platformSplashPath : 'platforms/ios/' + projectName + xcodeSplashFolder,
     splashes : [
       // iPhone
       { name: 'Default~iphone.png',            width: 320,  height: 480  },
@@ -177,30 +183,30 @@ var getPlatforms = function (projectName) {
     pushIconsPath : (settings.RESOURCE_PATH + '/' + settings.ICON_DIR + '/android/').replace('//', '/'),
     pushIcons : [
       { name : 'drawable/'+pushIconName+'.png',       size : 96 * androidMult },
-      { name : 'drawable-ldpi/'+pushIconName+'.png',  size : 36 * androidMult },
-      { name : 'drawable-mdpi/'+pushIconName+'.png',  size : 48 * androidMult },
-      { name : 'drawable-hdpi/'+pushIconName+'.png',  size : 72 * androidMult },
-      { name : 'drawable-xhdpi/'+pushIconName+'.png', size : 96 * androidMult },
-      { name : 'drawable-xxhdpi/'+pushIconName+'.png', size : 144 * androidMult },
-      { name : 'drawable-xxxhdpi/'+pushIconName+'.png', size : 192 * androidMult },
-      { name : 'drawable-land-ldpi/'+pushIconName+'.png',  size : 36 * androidMult },
-      { name : 'drawable-land-mdpi/'+pushIconName+'.png',  size : 48 * androidMult },
-      { name : 'drawable-land-hdpi/'+pushIconName+'.png',  size : 72 * androidMult },
-      { name : 'drawable-land-xhdpi/'+pushIconName+'.png', size : 96 * androidMult },
-      { name : 'drawable-land-xxhdpi/'+pushIconName+'.png', size : 144 * androidMult },
-      { name : 'drawable-land-xxxhdpi/'+pushIconName+'.png', size : 192 * androidMult },
-      { name : 'drawable-port-ldpi/'+pushIconName+'.png',  size : 36 * androidMult },
-      { name : 'drawable-port-mdpi/'+pushIconName+'.png',  size : 48 * androidMult },
-      { name : 'drawable-port-hdpi/'+pushIconName+'.png',  size : 72 * androidMult },
-      { name : 'drawable-port-xhdpi/'+pushIconName+'.png', size : 96 * androidMult },
-      { name : 'drawable-port-xxhdpi/'+pushIconName+'.png', size : 144 * androidMult },
-      { name : 'drawable-port-xxxhdpi/'+pushIconName+'.png', size : 192 * androidMult },
-      { name : 'mipmap-ldpi/'+pushIconName+'.png',  size : 36 * androidMult },
-      { name : 'mipmap-mdpi/'+pushIconName+'.png',  size : 48 * androidMult },
-      { name : 'mipmap-hdpi/'+pushIconName+'.png',  size : 72 * androidMult },
-      { name : 'mipmap-xhdpi/'+pushIconName+'.png', size : 96 * androidMult },
-      { name : 'mipmap-xxhdpi/'+pushIconName+'.png', size : 144 * androidMult },
-      { name : 'mipmap-xxxhdpi/'+pushIconName+'.png', size : 192 * androidMult }
+      { name : 'drawable-ldpi/'+pushIconName+'.png',  size : 18 * androidMult },
+      { name : 'drawable-mdpi/'+pushIconName+'.png',  size : 24 * androidMult },
+      { name : 'drawable-hdpi/'+pushIconName+'.png',  size : 36 * androidMult },
+      { name : 'drawable-xhdpi/'+pushIconName+'.png', size : 48 * androidMult },
+      { name : 'drawable-xxhdpi/'+pushIconName+'.png', size : 72 * androidMult },
+      { name : 'drawable-xxxhdpi/'+pushIconName+'.png', size : 96 * androidMult },
+      { name : 'drawable-land-ldpi/'+pushIconName+'.png',  size : 18 * androidMult },
+      { name : 'drawable-land-mdpi/'+pushIconName+'.png',  size : 24 * androidMult },
+      { name : 'drawable-land-hdpi/'+pushIconName+'.png',  size : 36 * androidMult },
+      { name : 'drawable-land-xhdpi/'+pushIconName+'.png', size : 48 * androidMult },
+      { name : 'drawable-land-xxhdpi/'+pushIconName+'.png', size : 72 * androidMult },
+      { name : 'drawable-land-xxxhdpi/'+pushIconName+'.png', size : 96 * androidMult },
+      { name : 'drawable-port-ldpi/'+pushIconName+'.png',  size : 18 * androidMult },
+      { name : 'drawable-port-mdpi/'+pushIconName+'.png',  size : 24 * androidMult },
+      { name : 'drawable-port-hdpi/'+pushIconName+'.png',  size : 36 * androidMult },
+      { name : 'drawable-port-xhdpi/'+pushIconName+'.png', size : 48 * androidMult },
+      { name : 'drawable-port-xxhdpi/'+pushIconName+'.png', size : 72 * androidMult },
+      { name : 'drawable-port-xxxhdpi/'+pushIconName+'.png', size : 96 * androidMult },
+      { name : 'mipmap-ldpi/'+pushIconName+'.png',  size : 18 * androidMult },
+      { name : 'mipmap-mdpi/'+pushIconName+'.png',  size : 24 * androidMult },
+      { name : 'mipmap-hdpi/'+pushIconName+'.png',  size : 36 * androidMult },
+      { name : 'mipmap-xhdpi/'+pushIconName+'.png', size : 48 * androidMult },
+      { name : 'mipmap-xxhdpi/'+pushIconName+'.png', size : 72 * androidMult },
+      { name : 'mipmap-xxxhdpi/'+pushIconName+'.png', size : 96 * androidMult }
     ],
     //splashPath : 'res/screen/android/',
     platformSplashPath : settings.OLD_ANDROID_PATH  ?  'platforms/android/res/' : 'platforms/android/app/src/main/res/',
@@ -520,8 +526,8 @@ var generatePushIcon = function (platform, icon) {
   }
   if(platform.name == 'android'){
     gm(srcPath)
-    .monochrome()
-    .colos(1)
+    .out("-define")
+    .out("png:color-type=2")
     .resize(icon.size,icon.size)
     .write(dstPath, function(err){
       if (err) {
