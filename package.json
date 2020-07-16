@@ -20,6 +20,7 @@
 	"license": "MIT",
 	"author": "Amir Moradi <contact@amirhmoradi.com>",
 	"main": "index.js",
+	"bin": "./bin/cordova-iconsplash-creator",
 	"directories": {
 		"bin": "./bin"
 	},
